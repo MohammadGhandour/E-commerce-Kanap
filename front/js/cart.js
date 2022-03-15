@@ -272,6 +272,7 @@ if (products == null || products.length < 1) {
                     .then(res => res.json())
                     .then(data => {
                         let orderId = data.orderId;
+                        localStorage.removeItem('cart')
                         location.assign("confirmation.html?orderId=" + orderId);
                     })
                     .catch(err => console.log(err));
