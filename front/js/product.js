@@ -45,10 +45,6 @@ fetch('http://localhost:3000/api/products/' + productId)
                 var newCart;
                 let product = {
                     id: productId,
-                    Name: productName.innerHTML,
-                    ImgUrl: productImg.querySelector('img').getAttribute("src"),
-                    ImgAlt: productImg.querySelector('img').getAttribute("alt"),
-                    Price: cart.price,
                     Color: productColors.value,
                     Quantity: productQuantity.value,
                 };
