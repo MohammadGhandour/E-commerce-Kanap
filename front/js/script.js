@@ -25,6 +25,6 @@ function getProducts() {
             }
             document.getElementById('items').innerHTML = affichage
         })
-        .catch(err => console.log("Nous n'avons pas pu afficher les produits__ " + err))
+        .catch(err => console.log("Nous n'avons pas pu afficher les produits: " + err))
 }
 getProducts();
