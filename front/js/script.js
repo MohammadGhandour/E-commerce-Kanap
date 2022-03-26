@@ -1,19 +1,17 @@
-// GET products from API
-function getProducts() {
-    // GET products data
-    fetch('http://localhost:3000/api/products')
-        .then(function (res) {
-            if (res.ok) {
-                return res.json();
-            }
-        })
-        .then(data => {
+// GET products data
+fetch('http://localhost:3000/api/products')
+    .then(function (res) {
+        if (res.ok) {
+            return res.json();
+        }
+    })
+    .then(data => {
 
-            // Display products on the page
-            let affichage = '';
-            for (let product of data) {
-                affichage +=
-                    `
+        // Display products on the page
+        let affichage = '';
+        for (let product of data) {
+            affichage +=
+                `
                     <a href="./product.html?id=${product._id}">
                         <article>
                             <img src="${product.imageUrl}" alt="${product.altTxt}">
@@ -22,9 +20,7 @@ function getProducts() {
                         </article>
                     </a>
                     `
-            }
-            document.getElementById('items').innerHTML = affichage
-        })
-        .catch(err => console.log("Nous n'avons pas pu afficher les produits: " + err))
-}
-getProducts();
+        }
+        document.getElementById('items').innerHTML = affichage
+    })
+    .catch(err => console.log("Nous n'avons pas pu afficher les produits: " + err))
