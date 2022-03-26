@@ -21,21 +21,19 @@ fetch('http://localhost:3000/api/products/' + productId)
             return res.json();
         }
     })
-    .then(cart => {
-        productImg.innerHTML =
-            `
-                        <img src="${cart.imageUrl}" alt="${cart.altTxt}">
-                        `;
+    .then(product => {
+        productImg.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
 
-        productName.innerHTML = cart.name;
+        productName.innerHTML = product.name;
 
-        productPrice.innerHTML = cart.price;
+        productPrice.innerHTML = product.price;
 
-        productDescription.innerHTML = cart.description;
+        productDescription.innerHTML = product.description;
 
-        for (let color of cart.colors) {
+        for (let color of product.colors) {
             productColors.innerHTML += `<option value="${color}">${color}</option>`;
         }
+        
         addToCart.addEventListener('click', function () {
             if (productColors.value == "") {
                 alert("Choisissez un couleur valid pour ajouter ce produit au panier :) ");

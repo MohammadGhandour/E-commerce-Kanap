@@ -40,10 +40,27 @@ for (let i = 0; i < products.length; i++) {
                     </article>
                 `
             getTotal() // Calculer le prix total des données récupérées
-            deleteProduct(); // Supprimer un produit
             updateProductQuantity(); // Modifier la quantité de produit
+            deleteProduct(); // Supprimer un produit
             getArticlesQuantity(); // Obtenir la quantité des articles
         })
+}
+
+// Obtenir le prix total des produits
+function getTotal() {
+    let total = 0;
+    for (let i = 0; i < products.length; i++) {
+        fetch('http://localhost:3000/api/products/' + products[i].id)
+            .then(item => item.json())
+            .then(data => {
+                total += data.price * products[i].Quantity;
+                document.getElementById('totalPrice').innerHTML = total;
+            })
+    }
+    if (products.length < 1) {
+        total = 0;
+        document.getElementById('totalPrice').innerHTML = total;
+    }
 }
 
 // Le nombre des articles
@@ -54,6 +71,34 @@ function getArticlesQuantity() {
         totalQuantity += parseInt(product.Quantity);
     });
     articlesQuantity.innerHTML = totalQuantity;
+}
+
+// Supprimer un produit
+function deleteProduct() {
+    const deleteBtns = document.querySelectorAll('.deleteItem');
+    deleteBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const articleToRemove = btn.closest('article');
+            const idProductToDelete = articleToRemove.getAttribute('data-id');
+            const colorProductToDelete = articleToRemove.getAttribute('data-color');
+            for (let i = 0; i < products.length; i++) {
+                if (products[i].id === idProductToDelete && products[i].Color === colorProductToDelete) {
+                    // Supprimer l'élément du localStorage
+                    products.splice(i, 1);
+                    i--;
+                    localStorage.setItem(('cart'), JSON.stringify(products));
+                    if (products.length < 1) {
+                        cartItems.innerHTML = 'Votre panier est vide.';
+                    }
+                    // Supprimer l'élément du DOM
+                    articleToRemove.remove();
+                    // Mettre le total à jour
+                    getTotal();
+                    getArticlesQuantity();
+                }
+            }
+        });
+    });
 }
 
 // Modifier la quantité d'un produit
@@ -94,52 +139,6 @@ function updateProductQuantity() {
         })
     })
 }
-
-// Supprimer un produit
-function deleteProduct() {
-    const deleteBtns = document.querySelectorAll('.deleteItem');
-    deleteBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const articleToRemove = btn.closest('article');
-            const idProductToDelete = articleToRemove.getAttribute('data-id');
-            const colorProductToDelete = articleToRemove.getAttribute('data-color');
-            for (let i = 0; i < products.length; i++) {
-                if (products[i].id === idProductToDelete && products[i].Color === colorProductToDelete) {
-                    // Supprimer l'élément du localStorage
-                    products.splice(i, 1);
-                    i--;
-                    localStorage.setItem(('cart'), JSON.stringify(products));
-                    if (products.length < 1) {
-                        cartItems.innerHTML = 'Votre panier est vide.';
-                    }
-                    // Supprimer l'élément du DOM
-                    articleToRemove.remove();
-                    // Mettre le total à jour
-                    getTotal();
-                    getArticlesQuantity();
-                }
-            }
-        });
-    });
-}
-
-// Obtenir le prix total des produits
-function getTotal() {
-    let total = 0;
-    for (let i = 0; i < products.length; i++) {
-        fetch('http://localhost:3000/api/products/' + products[i].id)
-            .then(item => item.json())
-            .then(data => {
-                total += data.price * products[i].Quantity;
-                document.getElementById('totalPrice').innerHTML = total;
-            })
-    }
-    if (products.length < 1) {
-        total = 0;
-        document.getElementById('totalPrice').innerHTML = total;
-    }
-}
-
 
 
 // Validation des données
